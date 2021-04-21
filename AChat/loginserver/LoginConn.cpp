@@ -57,7 +57,7 @@ LoginConn::~LoginConn()
 
 }
 
-void LoginConn::Close(const TcpConnection& tcpConn)
+void LoginConn::Close(/*const TcpConnection& tcpConn*/)
 {
 	if (sockfd != NETLIB_INVALID_HANDLE)
 	{

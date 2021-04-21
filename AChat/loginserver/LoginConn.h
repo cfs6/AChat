@@ -37,7 +37,7 @@ public:
 
 	void send();//todo
 	void OnConnect2(net_handle_t handle, int conn_type);
-	void Close(const TcpConnection& tcpConn);
+	void Close(/*const TcpConnection& tcpConn*/);
 	void OnClose();
 
 	void login_conn_timer_callback();

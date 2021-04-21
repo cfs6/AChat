@@ -2,7 +2,6 @@
 #ifndef IMCONN_H_
 #define IMCONN_H_
 
-#include "netlib.h"
 #include "util.h"
 #include "ImPduBase.h"
 #include "net/Buffer.h"
@@ -17,6 +16,7 @@
 #define MOBILE_CLIENT_TIMEOUT       60000 * 5
 #define READ_BUF_SIZE	2048
 #define MAX_SOCKET_BUF_SIZE         128*1024
+#define NETLIB_MAX_SOCKET_BUF_SIZE		(128 * 1024)
 using namespace net;
 
 class ImConn /*: public RefObject*/
@@ -40,7 +40,7 @@ public:
 	virtual void handlePdu(ImPdu* pPdu) {}
 
 
-private:
+protected:
 	SOCKET               sockfd;
 	bool                 busy;
 	std::string          peerIp;
