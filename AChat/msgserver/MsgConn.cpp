@@ -30,7 +30,7 @@ static uint32_t g_up_msg_miss_cnt = 0;		// 上行消息包丢数
 static uint32_t g_down_msg_total_cnt = 0;	// 下行消息包总数
 static uint32_t g_down_msg_miss_cnt = 0;	// 下行消息丢包数
 
-static bool g_log_msg_toggle = true;	// 是否把收到的MsgData写入Log的开关，通过kill -SIGUSR2 pid 打开/关闭
+static bool g_log_msg_toggle = true;
 
 static FileHandler* s_file_handler = NULL;
 static GroupChat* s_group_chat = NULL;
@@ -118,6 +118,18 @@ void MsgConn::onConnected()
 	signal(SIGUSR2, signal_handler_usr2);
 	signal(SIGHUP, signal_handler_hup);
 
+	sockfd = handle;
+	SOCKET msgsock = GetHandle();
+	m_login_time = get_tick_count();
+
+	g_msg_conn_map.insert(make_pair(msgsock, this));
+
+	tcpConn.setConnectionCallback()
+	netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)imconn_callback);
+	netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, (void*)&g_msg_conn_map);
+	netlib_option(handle, NETLIB_OPT_GET_REMOTE_IP, (void*)&m_peer_ip);
+	netlib_option(handle, NETLIB_OPT_GET_REMOTE_PORT, (void*)&m_peer_port);
+
 	TcpConnection conn = getConn();
     if (conn)
     {
@@ -125,6 +137,8 @@ void MsgConn::onConnected()
     }
 	s_file_handler = FileHandler::getInstance();
 	s_group_chat = GroupChat::GetInstance();
+
+
 }
 
 void MsgConn::SendUserStatusUpdate(uint32_t user_status)

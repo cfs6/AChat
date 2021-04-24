@@ -140,9 +140,7 @@ void HttpConn::Close()
     state = CONN_STATE_CLOSED;
     
     g_http_conn_map.erase(connHandle);
-    netlib_close(sockfd);
-
-    ReleaseRef();
+    tcpConn.forceClose();
 }
 
 void HttpConn::OnConnect(net_handle_t handle)
@@ -151,10 +149,7 @@ void HttpConn::OnConnect(net_handle_t handle)
     sockfd = handle;
     state = CONN_STATE_CONNECTED;
     g_http_conn_map.insert(make_pair(connHandle, this));
-    
-    netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)httpconn_callback);
-    netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, reinterpret_cast<void *>(connHandle) );
-    netlib_option(handle, NETLIB_OPT_GET_REMOTE_IP, (void*)&m_peer_ip);
+    //TODO SET_CALLBACK
 }
 
 void HttpConn::OnRead()
@@ -243,7 +238,6 @@ void HttpConn::OnTimer(uint64_t curr_tick)
 	}
 }
 
-//通过登陆IP来优选电信还是联通IP
 void HttpConn::_HandleMsgServRequest(string& url, string& post_data)
 {
     msg_serv_info_t* pMsgServInfo;

@@ -10,47 +10,6 @@ EventLoop mainLoop;
 IpParser* pIpParser = NULL;
 string strMsfsUrl;
 string strDiscovery;//发现获取地址
-void client_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
-{
-	if (msg == NETLIB_MSG_CONNECT)
-	{
-		LoginConn* pConn = new LoginConn();
-		pConn->OnConnect2(handle, LOGIN_CONN_TYPE_CLIENT);
-	}
-	else
-	{
-		LOGE("!!!error msg: %d ", msg);
-	}
-}
-
-void msg_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
-{
-    LOGE("msg_server come in");
-
-	if (msg == NETLIB_MSG_CONNECT)
-	{
-		LoginConn* pConn = new LoginConn();
-		pConn->OnConnect2(handle, LOGIN_CONN_TYPE_MSG_SERV);
-	}
-	else
-	{
-		LOGE("!!!error msg: %d ", msg);
-	}
-}
-
-
-void http_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
-{
-    if (msg == NETLIB_MSG_CONNECT)
-    {
-        HttpConn* pConn = new HttpConn();
-        pConn->OnConnect(handle);
-    }
-    else
-    {
-        LOGE("!!!error msg: %d ", msg);
-    }
-}
 
 
 int main(int argc, char* argv[])
@@ -91,13 +50,13 @@ int main(int argc, char* argv[])
     
     pIpParser = new IpParser();
     
-    LoginServer::getInstance()->init(client_listen_ip, client_port, &mainLoop);//TODO:多IP?
+    LoginServer::getInstance()->init(client_listen_ip, client_port, &mainLoop);
 
     //TODO:MsgServer
+    MsgdispatchServer::getInstance()->init(msg_server_listen_ip, msg_server_port, &mainLoop);
 
 	HttpServer::getInstance()->init(http_listen_ip, http_port, &mainLoop);
     
-
     LOGI("loginserver initialization completed, now you can use client to connect it.");
 
     mainLoop.loop();

@@ -1,10 +1,3 @@
-/*
- * EventLoop.cpp
- *
- *  Created on: 2021年1月24日
- *      Author: cfs
- */
-
 #include"EventLoop.h"
 #include<sstream>
 #include<string.h>

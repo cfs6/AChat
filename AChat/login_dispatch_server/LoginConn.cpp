@@ -10,8 +10,8 @@ using namespace IM::BaseDefine;
 static connMap g_client_conn_map;
 static connMap g_msg_serv_conn_map;
 static uint32_t g_total_online_user_cnt = 0;	  // 并发在线总人数
-map<uint32_t, msg_serv_info_t*> g_msg_serv_info;
-
+//map<uint32_t, msg_serv_info_t*> g_msg_serv_info;
+//set<msg_serv_info_t> msgServerInfos;
 void LoginConn::login_conn_timer_callback()
 {
 	uint64_t cur_time = get_tick_count();
@@ -151,9 +151,9 @@ void LoginConn::HandlePdu(ImPdu* pPdu)
         case CID_OTHER_USER_CNT_UPDATE:
             _HandleUserCntUpdate(pPdu);
             break;
-        case CID_LOGIN_REQ_MSGSERVER:
-            _HandleMsgServRequest(pPdu);
-            break;
+//        case CID_LOGIN_REQ_MSGSERVER:
+//            _HandleMsgServRequest(pPdu);
+//            break;
 
         default:
             LOGE("wrong msg, cmd id=%d ", pPdu->GetCommandId());
