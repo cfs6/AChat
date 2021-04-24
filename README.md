@@ -16,10 +16,12 @@
 - 断线重连
 
 ### 主要服务程序
-- LoginServer (C++): 登录分流负载均衡服务器，分配一个负载小的MsgServer给客户端使用
-- MsgServer (C++): 消息服务器，提供大部分信令处理功能，包括私人聊天、群组聊天等
+- Login_Dispatch_Server (C++): 登录分流服务器，根据各个MsgServer负载状况，分配一个负载小的MsgServer给客户端使用
+- MsgServer (C++): 消息服务器，提供大部分消息处理功能，包括私人聊天、群组聊天等
 - DBProxy (C++): 数据库代理服务器，提供mysql以及redis的访问服务，屏蔽其他服务器与mysql与redis的直接交互
-- FileServer(C++): 文件服务器，提供客户端之间得文件传输服务
+- FileServer(C++): 文件服务器，提供客户端之间的文件传输服务
 
-//TODO：保持维护，部分本地整理后更新
+//TODO：
+保持维护，部分本地整理后更新
+
 
