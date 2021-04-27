@@ -15,7 +15,7 @@ CDepartModel* CDepartModel::getInstance()
 void CDepartModel::getChgedDeptId(uint32_t& nLastTime, list<uint32_t>& lsChangedIds)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strSql = "select id, updated from IMDepart where updated > " + int2string(nLastTime);
@@ -37,7 +37,7 @@ void CDepartModel::getChgedDeptId(uint32_t& nLastTime, list<uint32_t>& lsChanged
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave.");
+        LOGE("no db connection for AChat_slave.");
     }
 }
 
@@ -49,7 +49,7 @@ void CDepartModel::getDepts(list<uint32_t>& lsDeptIds, list<IM::BaseDefine::Depa
         return;
     }
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strClause;
@@ -92,14 +92,14 @@ void CDepartModel::getDepts(list<uint32_t>& lsDeptIds, list<IM::BaseDefine::Depa
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 
 void CDepartModel::getDept(uint32_t nDeptId, IM::BaseDefine::DepartInfo& cDept)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strSql = "select * from IMDepart where id = " + int2string(nDeptId);
@@ -127,6 +127,6 @@ void CDepartModel::getDept(uint32_t nDeptId, IM::BaseDefine::DepartInfo& cDept)
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }

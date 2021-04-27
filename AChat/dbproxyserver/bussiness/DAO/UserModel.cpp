@@ -29,7 +29,7 @@ UserModel* UserModel::getInstance()
 void UserModel::getChangedId(uint32_t& nLastTime, list<uint32_t> &lsIds)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strSql ;
@@ -63,7 +63,7 @@ void UserModel::getChangedId(uint32_t& nLastTime, list<uint32_t> &lsIds)
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 
@@ -74,7 +74,7 @@ void UserModel::getUsers(list<uint32_t> lsIds, list<IM::BaseDefine::UserInfo> &l
         return;
     }
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strClause;
@@ -123,7 +123,7 @@ void UserModel::getUsers(list<uint32_t> lsIds, list<IM::BaseDefine::UserInfo> &l
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 
@@ -131,7 +131,7 @@ bool UserModel::getUser(uint32_t nUserId, DBUserInfo_t &cUser)
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strSql = "select * from IMUser where id="+int2string(nUserId);
@@ -163,7 +163,7 @@ bool UserModel::getUser(uint32_t nUserId, DBUserInfo_t &cUser)
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
     return bRet;
 }
@@ -173,7 +173,7 @@ bool UserModel::updateUser(DBUserInfo_t &cUser)
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         uint32_t nNow = (uint32_t)time(NULL);
@@ -187,7 +187,7 @@ bool UserModel::updateUser(DBUserInfo_t &cUser)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return bRet;
 }
@@ -196,7 +196,7 @@ bool UserModel::insertUser(DBUserInfo_t &cUser)
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         string strSql = "insert into IMUser(`id`,`sex`,`nick`,`domain`,`name`,`phone`,`email`,`avatar`,`sign_info`,`departId`,`status`,`created`,`updated`) values(?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -233,7 +233,7 @@ bool UserModel::insertUser(DBUserInfo_t &cUser)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return bRet;
 }
@@ -292,7 +292,7 @@ void UserModel::setCallReport(uint32_t nUserId, uint32_t nPeerId, IM::BaseDefine
     if(IM::BaseDefine::ClientType_IsValid(nClientType))
     {
         DBManager* pDBManager = DBManager::getInstance();
-        DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+        DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
         if(pDBConn)
         {
             string strSql = "insert into IMCallLOGE(`userId`, `peerId`, `clientType`,`created`,`updated`) values(?,?,?,?,?)";
@@ -319,7 +319,7 @@ void UserModel::setCallReport(uint32_t nUserId, uint32_t nPeerId, IM::BaseDefine
         }
         else
         {
-            LOGE("no db connection for teamtalk_master");
+            LOGE("no db connection for AChat_master");
         }
         
     }
@@ -338,7 +338,7 @@ bool UserModel::updateUserSignInfo(uint32_t user_id, const string& sign_info) {
     }
     bool rv = false;
     DBManager* db_manager = DBManager::getInstance();
-    DBConn* db_conn = db_manager->getDBConn("teamtalk_master");
+    DBConn* db_conn = db_manager->getDBConn("AChat_master");
     if (db_conn) {
         uint32_t now = (uint32_t)time(NULL);
         string str_sql = "update IMUser set `sign_info`='" + sign_info + "', `updated`=" + int2string(now) + " where id="+int2string(user_id);
@@ -351,7 +351,7 @@ bool UserModel::updateUserSignInfo(uint32_t user_id, const string& sign_info) {
         }
         db_manager->relDBConn(db_conn);
         } else {
-            LOGE("updateUserSignInfo: no db connection for teamtalk_master");
+            LOGE("updateUserSignInfo: no db connection for AChat_master");
             }
     return rv;
     }
@@ -359,7 +359,7 @@ bool UserModel::updateUserSignInfo(uint32_t user_id, const string& sign_info) {
 bool UserModel::getUserSingInfo(uint32_t user_id, string* sign_info) {
     bool rv = false;
     DBManager* db_manager = DBManager::getInstance();
-    DBConn* db_conn = db_manager->getDBConn("teamtalk_slave");
+    DBConn* db_conn = db_manager->getDBConn("AChat_slave");
     if (db_conn) {
         string str_sql = "select sign_info from IMUser where id="+int2string(user_id);
         ResultSet* result_set = db_conn->executeQuery(str_sql.c_str());
@@ -374,7 +374,7 @@ bool UserModel::getUserSingInfo(uint32_t user_id, string* sign_info) {
                    }
                 db_manager->relDBConn(db_conn);
         } else {
-                    LOGE("no db connection for teamtalk_slave");
+                    LOGE("no db connection for AChat_slave");
                }
     return rv;
    }
@@ -383,7 +383,7 @@ bool UserModel::updatePushShield(uint32_t user_id, uint32_t shield_status) {
     bool rv = false;
     
     DBManager* db_manager = DBManager::getInstance();
-    DBConn* db_conn = db_manager->getDBConn("teamtalk_master");
+    DBConn* db_conn = db_manager->getDBConn("AChat_master");
     if (db_conn) {
         uint32_t now = (uint32_t)time(NULL);
         string str_sql = "update IMUser set `push_shield_status`="+ int2string(shield_status) + ", `updated`=" + int2string(now) + " where id="+int2string(user_id);
@@ -393,7 +393,7 @@ bool UserModel::updatePushShield(uint32_t user_id, uint32_t shield_status) {
         }
         db_manager->relDBConn(db_conn);
     } else {
-        LOGE("updatePushShield: no db connection for teamtalk_master");
+        LOGE("updatePushShield: no db connection for AChat_master");
     }
     
     return rv;
@@ -403,7 +403,7 @@ bool UserModel::getPushShield(uint32_t user_id, uint32_t* shield_status) {
     bool rv = false;
     
     DBManager* db_manager = DBManager::getInstance();
-    DBConn* db_conn = db_manager->getDBConn("teamtalk_slave");
+    DBConn* db_conn = db_manager->getDBConn("AChat_slave");
     if (db_conn) {
         string str_sql = "select push_shield_status from IMUser where id="+int2string(user_id);
         ResultSet* result_set = db_conn->executeQuery(str_sql.c_str());
@@ -418,7 +418,7 @@ bool UserModel::getPushShield(uint32_t user_id, uint32_t* shield_status) {
         }
         db_manager->relDBConn(db_conn);
     } else {
-        LOGE("getPushShield: no db connection for teamtalk_slave");
+        LOGE("getPushShield: no db connection for AChat_slave");
     }
     
     return rv;

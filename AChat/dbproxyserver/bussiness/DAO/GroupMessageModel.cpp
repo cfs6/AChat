@@ -65,7 +65,7 @@ bool GroupMessageModel::sendMessage(uint32_t nFromId, uint32_t nGroupId, IM::Bas
     if(GroupModel::getInstance()->isInGroup(nFromId, nGroupId))
     {
         DBManager* pDBManager = DBManager::getInstance();
-        DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+        DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
         if (pDBConn)
         {
             string strTableName = "IMGroupMessage_" + int2string(nGroupId % 8);
@@ -103,7 +103,7 @@ bool GroupMessageModel::sendMessage(uint32_t nFromId, uint32_t nGroupId, IM::Bas
         }
         else
         {
-            LOGE("no db connection for teamtalk_master");
+            LOGE("no db connection for AChat_master");
         }
     }
     else
@@ -257,7 +257,7 @@ void GroupMessageModel::getMessage(uint32_t nUserId, uint32_t nGroupId, uint32_t
     string strTableName = "IMGroupMessage_" + int2string(nGroupId % 8);
     
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         uint32_t nUpdated = GroupModel::getInstance()->getUserJoinTime(nGroupId, nUserId);
@@ -305,7 +305,7 @@ void GroupMessageModel::getMessage(uint32_t nUserId, uint32_t nGroupId, uint32_t
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 
@@ -418,7 +418,7 @@ void GroupMessageModel::getLastMsg(uint32_t nGroupId, uint32_t &nMsgId, string &
     string strTableName = "IMGroupMessage_" + int2string(nGroupId % 8);
     
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strSql = "select msgId, type,userId, content from " + strTableName + " where groupId = " + int2string(nGroupId) + " and status = 0 order by created desc, id desc limit 1";
@@ -450,7 +450,7 @@ void GroupMessageModel::getLastMsg(uint32_t nGroupId, uint32_t &nMsgId, string &
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 
@@ -509,7 +509,7 @@ void GroupMessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nGroupId, const
         if (GroupModel::getInstance()->isInGroup(nUserId, nGroupId))
         {
             DBManager* pDBManager = DBManager::getInstance();
-            DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+            DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
             if (pDBConn)
             {
                 string strTableName = "IMGroupMessage_" + int2string(nGroupId % 8);
@@ -564,7 +564,7 @@ void GroupMessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nGroupId, const
             }
             else
             {
-                LOGE("no db connection for teamtalk_slave");
+                LOGE("no db connection for AChat_slave");
             }
         }
         else

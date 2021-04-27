@@ -40,7 +40,7 @@ void MessageModel::getMessage(uint32_t nUserId, uint32_t nPeerId, uint32_t nMsgI
 	if (nRelateId != INVALID_VALUE)
     {
         DBManager* pDBManager = DBManager::getInstance();
-        DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+        DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
         if (pDBConn)
         {
             string strTableName = "IMMessage_" + int2string(nRelateId % 8);
@@ -87,7 +87,7 @@ void MessageModel::getMessage(uint32_t nUserId, uint32_t nPeerId, uint32_t nMsgI
         }
         else
         {
-            LOGE("no db connection for teamtalk_slave");
+            LOGE("no db connection for AChat_slave");
         }
 	}
     else
@@ -112,7 +112,7 @@ bool MessageModel::sendMessage(uint32_t nRelateId, uint32_t nFromId, uint32_t nT
     }
 
 	DBManager* pDBManager = DBManager::getInstance();
-	DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+	DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
 	if (pDBConn)
     {
         string strTableName = "IMMessage_" + int2string(nRelateId % 8);
@@ -149,7 +149,7 @@ bool MessageModel::sendMessage(uint32_t nRelateId, uint32_t nFromId, uint32_t nT
 	}
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
 	return bRet;
 }
@@ -266,7 +266,7 @@ void MessageModel::getLastMsg(uint32_t nFromId, uint32_t nToId, uint32_t& nMsgId
     {
 
         DBManager* pDBManager = DBManager::getInstance();
-        DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+        DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
         if (pDBConn)
         {
             string strTableName = "IMMessage_" + int2string(nRelateId % 8);
@@ -352,7 +352,7 @@ void MessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nPeerId, const list<
     }
 
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strTableName = "IMMessage_" + int2string(nRelateId % 8);
@@ -406,7 +406,7 @@ void MessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nPeerId, const list<
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 

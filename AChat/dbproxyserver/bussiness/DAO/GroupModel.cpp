@@ -80,7 +80,7 @@ bool GroupModel::removeGroup(uint32_t nUserId, uint32_t nGroupId, list<uint32_t>
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     set<uint32_t> setGroupUsers;
     if(pDBConn)
     {
@@ -142,7 +142,7 @@ void GroupModel::getGroupInfo(map<uint32_t,IM::BaseDefine::GroupVersionInfo>& ma
    if (!mapGroupId.empty())
     {
        DBManager* pDBManager = DBManager::getInstance();
-        DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+        DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
         if (pDBConn)
         {
             string strClause;
@@ -200,7 +200,7 @@ void GroupModel::getGroupInfo(map<uint32_t,IM::BaseDefine::GroupVersionInfo>& ma
         }
         else
         {
-            LOGE("no db connection for teamtalk_slave");
+            LOGE("no db connection for AChat_slave");
         }
     }
     else
@@ -247,7 +247,7 @@ bool GroupModel::insertNewGroup(uint32_t nUserId, const string& strGroupName, co
     bool bRet = false;
     nGroupId = INVALID_VALUE;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         string strSql = "insert into IMGroup(`name`, `avatar`, `creator`, `type`,`userCnt`, `status`, `version`, `lastChated`, `updated`, `created`) "\
@@ -282,7 +282,7 @@ bool GroupModel::insertNewGroup(uint32_t nUserId, const string& strGroupName, co
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return bRet;
 }
@@ -294,7 +294,7 @@ bool GroupModel::insertNewMember(uint32_t nGroupId, set<uint32_t>& setUsers)
     if(nGroupId != INVALID_VALUE &&  nUserCnt > 0)
     {
         DBManager* pDBManager = DBManager::getInstance();
-        DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+        DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
         if (pDBConn)
         {
             uint32_t nCreated = (uint32_t)time(NULL);
@@ -329,7 +329,7 @@ bool GroupModel::insertNewMember(uint32_t nGroupId, set<uint32_t>& setUsers)
             }
             pDBManager->relDBConn(pDBConn);
             
-            pDBConn = pDBManager->getDBConn("teamtalk_master");
+            pDBConn = pDBManager->getDBConn("AChat_master");
             if (pDBConn)
             {
                 CacheManager* pCacheManager = CacheManager::getInstance();
@@ -413,12 +413,12 @@ bool GroupModel::insertNewMember(uint32_t nGroupId, set<uint32_t>& setUsers)
             }
             else
             {
-                LOGE("no db connection for teamtalk_master");
+                LOGE("no db connection for AChat_master");
             }
         }
         else
         {
-            LOGE("no db connection for teamtalk_slave");
+            LOGE("no db connection for AChat_slave");
         }
     }
     return bRet;
@@ -427,7 +427,7 @@ bool GroupModel::insertNewMember(uint32_t nGroupId, set<uint32_t>& setUsers)
 void GroupModel::getUserGroupIds(uint32_t nUserId, list<uint32_t>& lsGroupId, uint32_t nLimited)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if(pDBConn)
     {
         string strSql ;
@@ -457,7 +457,7 @@ void GroupModel::getUserGroupIds(uint32_t nUserId, list<uint32_t>& lsGroupId, ui
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 
@@ -466,7 +466,7 @@ void GroupModel::getGroupVersion(list<uint32_t> &lsGroupId, list<IM::BaseDefine:
     if(!lsGroupId.empty())
     {
         DBManager* pDBManager = DBManager::getInstance();
-        DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+        DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
         if(pDBConn)
         {
             string strClause;
@@ -511,7 +511,7 @@ void GroupModel::getGroupVersion(list<uint32_t> &lsGroupId, list<IM::BaseDefine:
         }
         else
         {
-            LOGE("no db connection for teamtalk_slave");
+            LOGE("no db connection for AChat_slave");
         }
     }
     else
@@ -551,7 +551,7 @@ bool GroupModel::hasModifyPermission(uint32_t nUserId, uint32_t nGroupId, IM::Ba
     
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if(pDBConn)
     {
         string strSql = "select creator, type from IMGroup where id="+ int2string(nGroupId);
@@ -589,7 +589,7 @@ bool GroupModel::hasModifyPermission(uint32_t nUserId, uint32_t nGroupId, IM::Ba
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
     return bRet;
 }
@@ -611,7 +611,7 @@ bool GroupModel::removeMember(uint32_t nGroupId, set<uint32_t> &setUser, list<ui
     }
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if(pDBConn)
     {
         CacheManager* pCacheManager = CacheManager::getInstance();
@@ -655,7 +655,7 @@ bool GroupModel::removeMember(uint32_t nGroupId, set<uint32_t> &setUser, list<ui
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return bRet;
 }
@@ -791,7 +791,7 @@ void GroupModel::getGroupUser(uint32_t nGroupId, list<uint32_t> &lsUserId)
 void GroupModel::updateGroupChat(uint32_t nGroupId)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if(pDBConn)
     {
         uint32_t nNow = (uint32_t)time(NULL);
@@ -801,7 +801,7 @@ void GroupModel::updateGroupChat(uint32_t nGroupId)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
 }
 
@@ -809,7 +809,7 @@ void GroupModel::updateGroupChat(uint32_t nGroupId)
 //{
 //    bool bRet = false;
 //    DBManager* pDBManager = DBManager::getInstance();
-//    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+//    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
 //    if(pDBConn)
 //    {
 //        string strSql = "select id from IMGroup where id=" + int2string(nGroupId)+" and status=0";
@@ -823,7 +823,7 @@ void GroupModel::updateGroupChat(uint32_t nGroupId)
 //    }
 //    else
 //    {
-//        LOGE("no db connection for teamtalk_slave");
+//        LOGE("no db connection for AChat_slave");
 //    }
 //    return bRet;
 //}
@@ -857,7 +857,7 @@ bool GroupModel::incGroupVersion(uint32_t nGroupId)
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if(pDBConn)
     {
         string strSql = "update IMGroup set version=version+1 where id="+int2string(nGroupId);
@@ -869,7 +869,7 @@ bool GroupModel::incGroupVersion(uint32_t nGroupId)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return  bRet;
 }
@@ -913,7 +913,7 @@ uint32_t GroupModel::getUserJoinTime(uint32_t nGroupId, uint32_t nUserId)
 void GroupModel::clearGroupMember(uint32_t nGroupId)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if(pDBConn)
     {
         string strSql = "delete from IMGroupMember where groupId="+int2string(nGroupId);
@@ -922,7 +922,7 @@ void GroupModel::clearGroupMember(uint32_t nGroupId)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     CacheManager* pCacheManager = CacheManager::getInstance();
     CacheConn* pCacheConn = pCacheManager->getCacheConn("group_member");

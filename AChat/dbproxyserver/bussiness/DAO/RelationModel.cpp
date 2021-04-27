@@ -45,7 +45,7 @@ uint32_t RelationModel::getRelationId(uint32_t nUserAId, uint32_t nUserBId, bool
         return nRelationId;
     }
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         uint32_t nBigId = nUserAId > nUserBId ? nUserAId : nUserBId;
@@ -73,7 +73,7 @@ uint32_t RelationModel::getRelationId(uint32_t nUserAId, uint32_t nUserBId, bool
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
     return nRelationId;
 }
@@ -82,7 +82,7 @@ uint32_t RelationModel::addRelation(uint32_t nSmallId, uint32_t nBigId)
 {
     uint32_t nRelationId = INVALID_VALUE;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         uint32_t nTimeNow = (uint32_t)time(NULL);
@@ -138,7 +138,7 @@ uint32_t RelationModel::addRelation(uint32_t nSmallId, uint32_t nBigId)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return nRelationId;
 }
@@ -147,7 +147,7 @@ bool RelationModel::updateRelation(uint32_t nRelationId, uint32_t nUpdateTime)
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         string strSql = "update IMRelationShip set `updated`="+int2string(nUpdateTime) + " where id="+int2string(nRelationId);
@@ -156,7 +156,7 @@ bool RelationModel::updateRelation(uint32_t nRelationId, uint32_t nUpdateTime)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return bRet;
 }
@@ -165,7 +165,7 @@ bool RelationModel::removeRelation(uint32_t nRelationId)
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         uint32_t nNow = (uint32_t) time(NULL);
@@ -175,7 +175,7 @@ bool RelationModel::removeRelation(uint32_t nRelationId)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return bRet;
 }

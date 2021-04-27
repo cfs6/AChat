@@ -6,7 +6,7 @@ bool CInterLoginStrategy::doLogin(const std::string &strName, const std::string 
 {
     bool bRet = false;
     DBManager* pDBManger = DBManager::getInstance();
-    DBConn* pDBConn = pDBManger->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManger->getDBConn("AChat_slave");
     if (pDBConn) {
         string strSql = "select * from IMUser where name='" + strName + "' and status=0";
         ResultSet* pResultSet = pDBConn->executeQuery(strSql.c_str());

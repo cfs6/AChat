@@ -24,7 +24,7 @@ FileModel* FileModel::getInstance()
 void FileModel::getOfflineFile(uint32_t userId, list<IM::BaseDefine::OfflineFileInfo>& lsOffline)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strSql = "select * from IMTransmitFile where toId="+int2string(userId) + " and status=0 order by created";
@@ -50,14 +50,14 @@ void FileModel::getOfflineFile(uint32_t userId, list<IM::BaseDefine::OfflineFile
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 
 void FileModel::addOfflineFile(uint32_t fromId, uint32_t toId, string& taskId, string& fileName, uint32_t fileSize)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         string strSql = "insert into IMTransmitFile (`fromId`,`toId`,`fileName`,`size`,`taskId`,`status`,`created`,`updated`) values(?,?,?,?,?,?,?,?)";
@@ -91,14 +91,14 @@ void FileModel::addOfflineFile(uint32_t fromId, uint32_t toId, string& taskId, s
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
 }
 
 void FileModel::delOfflineFile(uint32_t fromId, uint32_t toId, string& taskId)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         string strSql = "delete from IMTransmitFile where  fromId=" + int2string(fromId) + " and toId="+int2string(toId) + " and taskId='" + taskId + "'";
@@ -114,6 +114,6 @@ void FileModel::delOfflineFile(uint32_t fromId, uint32_t toId, string& taskId)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
 }

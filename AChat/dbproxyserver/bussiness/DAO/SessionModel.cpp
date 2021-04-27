@@ -18,7 +18,7 @@ SessionModel* SessionModel::getInstance()
 void SessionModel::getRecentSession(uint32_t nUserId, uint32_t lastTime, list<IM::BaseDefine::ContactSessionInfo>& lsContact)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     if (pDBConn)
     {
         string strSql = "select * from IMRecentSession where userId = " + int2string(nUserId) + " and status = 0 and updated >" + int2string(lastTime) + " order by updated desc limit 100";
@@ -59,14 +59,14 @@ void SessionModel::getRecentSession(uint32_t nUserId, uint32_t lastTime, list<IM
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
 }
 
 uint32_t SessionModel::getSessionId(uint32_t nUserId, uint32_t nPeerId, uint32_t nType, bool isAll)
 {
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_slave");
     uint32_t nSessionId = INVALID_VALUE;
     if(pDBConn)
     {
@@ -91,7 +91,7 @@ uint32_t SessionModel::getSessionId(uint32_t nUserId, uint32_t nPeerId, uint32_t
     }
     else
     {
-        LOGE("no db connection for teamtalk_slave");
+        LOGE("no db connection for AChat_slave");
     }
     return nSessionId;
 }
@@ -100,7 +100,7 @@ bool SessionModel::updateSession(uint32_t nSessionId, uint32_t nUpdateTime)
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         string strSql = "update IMRecentSession set `updated`="+int2string(nUpdateTime) + " where id="+int2string(nSessionId);
@@ -109,7 +109,7 @@ bool SessionModel::updateSession(uint32_t nSessionId, uint32_t nUpdateTime)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return bRet;
 }
@@ -118,7 +118,7 @@ bool SessionModel::removeSession(uint32_t nSessionId)
 {
     bool bRet = false;
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         uint32_t nNow = (uint32_t) time(NULL);
@@ -128,7 +128,7 @@ bool SessionModel::removeSession(uint32_t nSessionId)
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return bRet;
 }
@@ -140,7 +140,7 @@ uint32_t SessionModel::addSession(uint32_t nUserId, uint32_t nPeerId, uint32_t n
     nSessionId = getSessionId(nUserId, nPeerId, nType, true);
     uint32_t nTimeNow = time(NULL);
     DBManager* pDBManager = DBManager::getInstance();
-    DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+    DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
     if (pDBConn)
     {
         if(INVALID_VALUE != nSessionId)
@@ -184,7 +184,7 @@ uint32_t SessionModel::addSession(uint32_t nUserId, uint32_t nPeerId, uint32_t n
     }
     else
     {
-        LOGE("no db connection for teamtalk_master");
+        LOGE("no db connection for AChat_master");
     }
     return nSessionId;
 }
