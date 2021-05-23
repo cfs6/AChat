@@ -39,14 +39,12 @@ bool CAsyncLog::init(const char* pszLogFileName/* = nullptr*/, bool bTruncateLon
     else
         m_strFileName = pszLogFileName;
 
-    //��ȡ����id���������ٿ���ͬһ�����̵Ĳ�ͬ��־�ļ�
     char szPID[8];
 
     snprintf(szPID, sizeof(szPID), "%05d", (int)::getpid());
 
     m_strFileNamePID = szPID;
 
-    //TODO�������ļ���
 
     m_spWriteThread.reset(new std::thread(writeThreadProc));
 
@@ -93,16 +91,13 @@ bool CAsyncLog::output(long nLevel, const char* pszFmt, ...)
     std::string strLine;
     makeLinePrefix(nLevel, strLine);
 
-    //log����
     std::string strLogMsg;
 
-    //�ȼ���һ�²��������ĳ��ȣ��Ա��ڷ���ռ�
     va_list ap;
     va_start(ap, pszFmt);
     int nLogMsgLength = vsnprintf(NULL, 0, pszFmt, ap);
     va_end(ap);
 
-    //���������������һ��\0
     if ((int)strLogMsg.capacity() < nLogMsgLength + 1)
     {
         strLogMsg.resize(nLogMsgLength + 1);
@@ -112,17 +107,13 @@ bool CAsyncLog::output(long nLevel, const char* pszFmt, ...)
     vsnprintf((char*)strLogMsg.data(), strLogMsg.capacity(), pszFmt, aq);
     va_end(aq);
 
-    //string������ȷ��length���ԣ��ָ�һ����length
     std::string strMsgFormal;
     strMsgFormal.append(strLogMsg.c_str(), nLogMsgLength);
 
-    //�����־�����ضϣ�����־ֻȡǰMAX_LINE_LENGTH���ַ�
     if (m_bTruncateLongLog)
         strMsgFormal = strMsgFormal.substr(0, MAX_LINE_LENGTH);
 
     strLine += strMsgFormal;
-
-    //�������������̨�Ż���ÿһ��ĩβ��һ�����з�
     if (!m_strFileName.empty())
     {
         strLine += "\n";
@@ -136,7 +127,6 @@ bool CAsyncLog::output(long nLevel, const char* pszFmt, ...)
     }
     else
     {
-        //Ϊ����FATAL�������־������crash���򣬲�ȡͬ��д��־�ķ���
         std::cout << strLine << std::endl;
 #ifdef _WIN32
         OutputDebugStringA(strLine.c_str());
@@ -147,7 +137,6 @@ bool CAsyncLog::output(long nLevel, const char* pszFmt, ...)
         {
             if (m_hLogFile == nullptr)
             {
-                //�½��ļ�
                 char szNow[64];
                 time_t now = time(NULL);
                 tm time;
@@ -172,7 +161,6 @@ bool CAsyncLog::output(long nLevel, const char* pszFmt, ...)
 
         }// end outer-if
 
-        //�ó�������crash��
         crash();
     }
 
@@ -191,21 +179,17 @@ bool CAsyncLog::output(long nLevel, const char* pszFileName, int nLineNo, const 
     std::string strLine;
     makeLinePrefix(nLevel, strLine);
 
-    //����ǩ��
     char szFileName[512] = { 0 };
     snprintf(szFileName, sizeof(szFileName), "[%s:%d]", pszFileName, nLineNo);
     strLine += szFileName;
 
-    //��־����
     std::string strLogMsg;
 
-    //�ȼ���һ�²��������ĳ��ȣ��Ա��ڷ���ռ�
     va_list ap;
     va_start(ap, pszFmt);
     int nLogMsgLength = vsnprintf(NULL, 0, pszFmt, ap);
     va_end(ap);
 
-    //���������������һ��\0
     if ((int)strLogMsg.capacity() < nLogMsgLength + 1)
     {
         strLogMsg.resize(nLogMsgLength + 1);
@@ -215,17 +199,14 @@ bool CAsyncLog::output(long nLevel, const char* pszFileName, int nLineNo, const 
     vsnprintf((char*)strLogMsg.data(), strLogMsg.capacity(), pszFmt, aq);
     va_end(aq);
 
-    //string������ȷ��length���ԣ��ָ�һ����length
     std::string strMsgFormal;
     strMsgFormal.append(strLogMsg.c_str(), nLogMsgLength);
 
-    //�����־�����ضϣ�����־ֻȡǰMAX_LINE_LENGTH���ַ�
     if (m_bTruncateLongLog)
         strMsgFormal = strMsgFormal.substr(0, MAX_LINE_LENGTH);
 
     strLine += strMsgFormal;
 
-    //�������������̨�Ż���ÿһ��ĩβ��һ�����з�
     if (!m_strFileName.empty())
     {
         strLine += "\n";
@@ -239,7 +220,6 @@ bool CAsyncLog::output(long nLevel, const char* pszFileName, int nLineNo, const 
     }
     else
     {
-        //Ϊ����FATAL�������־������crash���򣬲�ȡͬ��д��־�ķ���
         std::cout << strLine << std::endl;
 
 
@@ -247,7 +227,6 @@ bool CAsyncLog::output(long nLevel, const char* pszFileName, int nLineNo, const 
         {
             if (m_hLogFile == nullptr)
             {
-                //�½��ļ�
                 char szNow[64];
                 time_t now = time(NULL);
                 tm time;
@@ -263,12 +242,11 @@ bool CAsyncLog::output(long nLevel, const char* pszFileName, int nLineNo, const 
                 strNewFileName += ".log";
                 if (!createNewFile(strNewFileName.c_str()))
                     return false;
-            }// end inner if
+            }
 
             writeToFile(strLine);
-        }// end outer-if
+        }
 
-        //�ó�������crash��
         crash();
     }
 
@@ -368,7 +346,6 @@ char* CAsyncLog::formLog(int& index, char* szbuf, size_t size_buf, unsigned char
 
 void CAsyncLog::makeLinePrefix(long nLevel, std::string& strPrefix)
 {
-    //����
     strPrefix = "[INFO]";
     if (nLevel == LOG_LEVEL_TRACE)
         strPrefix = "[TRACE]";
@@ -385,7 +362,6 @@ void CAsyncLog::makeLinePrefix(long nLevel, std::string& strPrefix)
     else if (nLevel == LOG_LEVEL_CRITICAL)
         strPrefix = "[CRITICAL]";
 
-    //ʱ��
     char szTime[64] = { 0 };
     getTime(szTime, sizeof(szTime));
 
@@ -393,7 +369,6 @@ void CAsyncLog::makeLinePrefix(long nLevel, std::string& strPrefix)
     strPrefix += szTime;
     strPrefix += "]";
 
-    //��ǰ�߳���Ϣ
     char szThreadID[32] = { 0 };
     std::ostringstream osThreadID;
     osThreadID << std::this_thread::get_id();
@@ -421,14 +396,12 @@ bool CAsyncLog::createNewFile(const char* pszLogFileName)
         fclose(m_hLogFile);
     }
 
-    //ʼ���½��ļ�
     m_hLogFile = fopen(pszLogFileName, "w+");
     return m_hLogFile != nullptr;
 }
 
 bool CAsyncLog::writeToFile(const std::string& data)
 {
-    //Ϊ�˷�ֹ���ļ�һ����д���꣬����һ��ѭ���������д
     std::string strLocal(data);
     int ret = 0;
     while (true)
@@ -469,10 +442,8 @@ void CAsyncLog::writeThreadProc()
         {
             if (m_hLogFile == nullptr || m_nCurrentWrittenSize >= m_nFileRollSize)
             {
-                //����m_nCurrentWrittenSize��С
                 m_nCurrentWrittenSize = 0;
 
-                //��һ�λ����ļ���С����rollsize�����½��ļ�
                 char szNow[64];
                 time_t now = time(NULL);
                 tm time;
@@ -487,8 +458,8 @@ void CAsyncLog::writeThreadProc()
                 strNewFileName += ".log";
                 if (!createNewFile(strNewFileName.c_str()))
                     return;
-            }// end inner if
-        }// end outer-if
+            }
+        }
 
 
         std::string strLine;

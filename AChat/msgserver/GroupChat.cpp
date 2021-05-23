@@ -1,10 +1,3 @@
-/*
- * GroupChat.cpp
- *
- *  Created on: 2014-1-3
- *      Author: ziteng@mogujie.com
- */
-
 #include "GroupChat.h"
 #include "MsgConn.h"
 #include "DBServConn.h"

@@ -1,10 +1,3 @@
-/*
- * CountDownLatch.h
- *
- *  Created on: 2021年1月24日
- *      Author: cfs
- */
-
 #ifndef COUNTDOWNLATCH_H_
 #define COUNTDOWNLATCH_H_
 /*CountDownLatch的主要作用是确保Thread中传进去的func真的启动了以后

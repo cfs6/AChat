@@ -67,7 +67,7 @@ bool AudioModel::readAudios(list<IM::BaseDefine::MsgInfo>& lsMsg)
     }
     bool bRet = false;
     DBManager* pDBManger = DBManager::getInstance();
-    DBConn* pDBConn = pDBManger->getDBConn("teamtalk_slave");
+    DBConn* pDBConn = pDBManger->getDBConn("AChat_slave");
     if (pDBConn)
     {
         for (auto it=lsMsg.begin(); it!=lsMsg.end(); )
@@ -104,7 +104,7 @@ bool AudioModel::readAudios(list<IM::BaseDefine::MsgInfo>& lsMsg)
     }
     else
     {
-        LOGE("no connection for teamtalk_slave");
+        LOGE("no connection for AChat_slave");
     }
     return bRet;
 }
@@ -133,7 +133,7 @@ int AudioModel::saveAudioInfo(uint32_t nFromId, uint32_t nToId, uint32_t nCreate
 	if (!strPath.empty())
     {
         DBManager* pDBManager = DBManager::getInstance();
-        DBConn* pDBConn = pDBManager->getDBConn("teamtalk_master");
+        DBConn* pDBConn = pDBManager->getDBConn("AChat_master");
         if (pDBConn)
         {
             uint32_t nStartPos = 0;
@@ -157,7 +157,7 @@ int AudioModel::saveAudioInfo(uint32_t nFromId, uint32_t nToId, uint32_t nCreate
         }
         else
         {
-            LOGE("no db connection for teamtalk_master");
+            LOGE("no db connection for AChat_master");
         }
 	}
     else

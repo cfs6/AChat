@@ -1,10 +1,3 @@
-/*
- * ConfigFileReader.h
- *
- *  Created on: 2021年3月20日
- *      Author: cfs
- */
-
 #ifndef CONFIGFILEREADER_H_
 #define CONFIGFILEREADER_H_
 

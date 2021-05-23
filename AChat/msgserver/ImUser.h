@@ -1,10 +1,3 @@
-/*
- * ImUser.h
- *
- *  Created on: 2014年4月16日
- *      Author: ziteng
- */
-
 #ifndef IMUSER_H_
 #define IMUSER_H_
 

@@ -381,9 +381,7 @@ void GroupMessageModel::getUnreadMsgCount(uint32_t nUserId, uint32_t &nTotalCnt,
 
 /**
  *  获取一个群组的msgId，自增，通过redis控制
- *
  *  @param nGroupId 群Id
- *
  *  @return 返回msgId
  */
 uint32_t GroupMessageModel::getMsgId(uint32_t nGroupId)

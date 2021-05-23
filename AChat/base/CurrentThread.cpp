@@ -1,9 +1,3 @@
-/*
- * CurrentThread.cpp
- *
- *  Created on: 2021年1月24日
- *      Author: cfs
- */
 #include <unistd.h>
 #include <sys/prctl.h>
 #include <sys/types.h>

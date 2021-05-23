@@ -5,11 +5,11 @@
 #include "ImConn.h"
 #include "ServInfo.h"
 
-class CLoginServConn : public ImConn
+class LoginServConn : public ImConn
 {
 public:
-	CLoginServConn();
-	virtual ~CLoginServConn();
+	LoginServConn();
+	virtual ~LoginServConn();
 
 	bool IsOpen() { return m_bOpen; }
 

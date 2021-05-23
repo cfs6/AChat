@@ -150,14 +150,12 @@ void ImUser::HandleKickUser(MsgConn* pConn, uint32_t reason)
     }
 }
 
-// 只支持一个WINDOWS/MAC客户端登陆,或者一个ios/android登录
 bool ImUser::KickOutSameClientType(uint32_t client_type, uint32_t reason, MsgConn* pFromConn)
 {
     for (map<uint32_t, MsgConn*>::iterator it = m_conn_map.begin(); it != m_conn_map.end(); it++)
     {
         MsgConn* pMsgConn = it->second;
         
-        //16进制位移计算
         if ((((pMsgConn->GetClientType() ^ client_type) >> 4) == 0) && (pMsgConn != pFromConn)) {
             HandleKickUser(pMsgConn, reason);
             break;

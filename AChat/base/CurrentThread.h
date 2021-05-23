@@ -1,10 +1,3 @@
-/*
- * CurrentThread.h
- *
- *  Created on: 2021年1月24日
- *      Author: cfs
- */
-
 #ifndef CURRENTTHREAD_H_
 #define CURRENTTHREAD_H_
 #pragma once

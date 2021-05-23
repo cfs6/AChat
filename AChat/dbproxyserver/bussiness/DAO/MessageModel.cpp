@@ -96,13 +96,6 @@ void MessageModel::getMessage(uint32_t nUserId, uint32_t nPeerId, uint32_t nMsgI
     }
 }
 
-/*
- * IMMessage 分表
- * AddFriendShip()
- * if nFromId or nToId is ShopEmployee
- * GetShopId
- * Insert into IMMessage_ShopId%8
- */
 bool MessageModel::sendMessage(uint32_t nRelateId, uint32_t nFromId, uint32_t nToId, IM::BaseDefine::MsgType nMsgType, uint32_t nCreateTime, uint32_t nMsgId, string& strMsgContent)
 {
     bool bRet =false;
@@ -156,7 +149,8 @@ bool MessageModel::sendMessage(uint32_t nRelateId, uint32_t nFromId, uint32_t nT
 
 bool MessageModel::sendAudioMessage(uint32_t nRelateId, uint32_t nFromId, uint32_t nToId, IM::BaseDefine::MsgType nMsgType, uint32_t nCreateTime, uint32_t nMsgId, const char* pMsgContent, uint32_t nMsgLen)
 {
-	if (nMsgLen <= 4) {
+	if (nMsgLen <= 4)
+	{
 		return false;
 	}
 
@@ -164,10 +158,13 @@ bool MessageModel::sendAudioMessage(uint32_t nRelateId, uint32_t nFromId, uint32
 	int nAudioId = pAudioModel->saveAudioInfo(nFromId, nToId, nCreateTime, pMsgContent, nMsgLen);
 
 	bool bRet = true;
-	if (nAudioId != -1) {
+	if (nAudioId != -1)
+	{
 		string strMsg = int2string(nAudioId);
 		bRet = sendMessage(nRelateId, nFromId, nToId, nMsgType, nCreateTime, nMsgId, strMsg);
-	} else {
+	}
+	else
+	{
 		bRet = false;
 	}
 
@@ -249,13 +246,6 @@ uint32_t MessageModel::getMsgId(uint32_t nRelateId)
 }
 
 /**
- *  <#Description#>
- *
- *  @param nFromId    <#nFromId description#>
- *  @param nToId      <#nToId description#>
- *  @param nMsgId     <#nMsgId description#>
- *  @param strMsgData <#strMsgData description#>
- *  @param nMsgType   <#nMsgType description#>
  *  @param nStatus    0获取未被删除的，1获取所有的，默认获取未被删除的
  */
 void MessageModel::getLastMsg(uint32_t nFromId, uint32_t nToId, uint32_t& nMsgId, string& strMsgData, IM::BaseDefine::MsgType& nMsgType, uint32_t nStatus)

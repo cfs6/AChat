@@ -103,18 +103,21 @@ namespace DB_PROXY {
 
                     MessageModel* pMsgModel = MessageModel::getInstance();
                     GroupMessageModel* pGroupMsgModel = GroupMessageModel::getInstance();
-                    if(nMsgType == IM::BaseDefine::MSG_TYPE_GROUP_TEXT) {
+                    if(nMsgType == IM::BaseDefine::MSG_TYPE_GROUP_TEXT)
+                    {
                         GroupModel* pGroupModel = GroupModel::getInstance();
                         if (pGroupModel->isValidateGroupId(nToId) && pGroupModel->isInGroup(nFromId, nToId))
                         {
                             nSessionId = SessionModel::getInstance()->getSessionId(nFromId, nToId, IM::BaseDefine::SESSION_TYPE_GROUP, false);
-                            if (INVALID_VALUE == nSessionId) {
+                            if (INVALID_VALUE == nSessionId)
+                            {
                                 nSessionId = SessionModel::getInstance()->addSession(nFromId, nToId, IM::BaseDefine::SESSION_TYPE_GROUP);
                             }
                             if(nSessionId != INVALID_VALUE)
                             {
                                 nMsgId = pGroupMsgModel->getMsgId(nToId);
-                                if (nMsgId != INVALID_VALUE) {
+                                if (nMsgId != INVALID_VALUE)
+                                {
                                     pGroupMsgModel->sendMessage(nFromId, nToId, nMsgType, nCreateTime, nMsgId, (string&)msg.msg_data());
                                     SessionModel::getInstance()->updateSession(nSessionId, nNow);
                                 }
@@ -126,12 +129,15 @@ namespace DB_PROXY {
                             delete pPduResp;
                             return;
                         }
-                    } else if (nMsgType == IM::BaseDefine::MSG_TYPE_GROUP_AUDIO) {
+                    }
+                    else if (nMsgType == IM::BaseDefine::MSG_TYPE_GROUP_AUDIO)
+                    {
                         GroupModel* pGroupModel = GroupModel::getInstance();
                         if (pGroupModel->isValidateGroupId(nToId)&& pGroupModel->isInGroup(nFromId, nToId))
                         {
                             nSessionId = SessionModel::getInstance()->getSessionId(nFromId, nToId, IM::BaseDefine::SESSION_TYPE_GROUP, false);
-                            if (INVALID_VALUE == nSessionId) {
+                            if (INVALID_VALUE == nSessionId)
+                            {
                                 nSessionId = SessionModel::getInstance()->addSession(nFromId, nToId, IM::BaseDefine::SESSION_TYPE_GROUP);
                             }
                             if(nSessionId != INVALID_VALUE)
@@ -150,10 +156,14 @@ namespace DB_PROXY {
                             delete pPduResp;
                             return;
                         }
-                    } else if(nMsgType== IM::BaseDefine::MSG_TYPE_SINGLE_TEXT) {
-                        if (nFromId != nToId) {
+                    }
+                    else if(nMsgType== IM::BaseDefine::MSG_TYPE_SINGLE_TEXT)
+                    {
+                        if (nFromId != nToId)
+                        {
                             nSessionId = SessionModel::getInstance()->getSessionId(nFromId, nToId, IM::BaseDefine::SESSION_TYPE_SINGLE, false);
-                            if (INVALID_VALUE == nSessionId) {
+                            if (INVALID_VALUE == nSessionId)
+                            {
                                 nSessionId = SessionModel::getInstance()->addSession(nFromId, nToId, IM::BaseDefine::SESSION_TYPE_SINGLE);
                             }
                             nPeerSessionId = SessionModel::getInstance()->getSessionId(nToId, nFromId, IM::BaseDefine::SESSION_TYPE_SINGLE, false);
@@ -161,7 +171,7 @@ namespace DB_PROXY {
                             {
                                 nSessionId = SessionModel::getInstance()->addSession(nToId, nFromId, IM::BaseDefine::SESSION_TYPE_SINGLE);
                             }
-                            uint32_t nRelateId = CRelationModel::getInstance()->getRelationId(nFromId, nToId, true);
+                            uint32_t nRelateId = RelationModel::getInstance()->getRelationId(nFromId, nToId, true);
                             if(nSessionId != INVALID_VALUE && nRelateId != INVALID_VALUE)
                             {
                                 nMsgId = pMsgModel->getMsgId(nRelateId);
@@ -185,12 +195,15 @@ namespace DB_PROXY {
                             LOGE("send msg to self. fromId=%u, toId=%u, msgType=%u", nFromId, nToId, nMsgType);
                         }
 
-                    } else if(nMsgType == IM::BaseDefine::MSG_TYPE_SINGLE_AUDIO) {
+                    }
+                    else if(nMsgType == IM::BaseDefine::MSG_TYPE_SINGLE_AUDIO)
+                    {
 
                         if(nFromId != nToId)
                         {
                             nSessionId = SessionModel::getInstance()->getSessionId(nFromId, nToId, IM::BaseDefine::SESSION_TYPE_SINGLE, false);
-                            if (INVALID_VALUE == nSessionId) {
+                            if (INVALID_VALUE == nSessionId)
+                            {
                                 nSessionId = SessionModel::getInstance()->addSession(nFromId, nToId, IM::BaseDefine::SESSION_TYPE_SINGLE);
                             }
                             nPeerSessionId = SessionModel::getInstance()->getSessionId(nToId, nFromId, IM::BaseDefine::SESSION_TYPE_SINGLE, false);
@@ -198,20 +211,23 @@ namespace DB_PROXY {
                             {
                                 nSessionId = SessionModel::getInstance()->addSession(nToId, nFromId, IM::BaseDefine::SESSION_TYPE_SINGLE);
                             }
-                            uint32_t nRelateId = CRelationModel::getInstance()->getRelationId(nFromId, nToId, true);
+                            uint32_t nRelateId = RelationModel::getInstance()->getRelationId(nFromId, nToId, true);
                             if(nSessionId != INVALID_VALUE && nRelateId != INVALID_VALUE)
                             {
                                 nMsgId = pMsgModel->getMsgId(nRelateId);
-                                if(nMsgId != INVALID_VALUE) {
+                                if(nMsgId != INVALID_VALUE)
+                                {
                                     pMsgModel->sendAudioMessage(nRelateId, nFromId, nToId, nMsgType, nCreateTime, nMsgId, msg.msg_data().c_str(), nMsgLen);
                                     SessionModel::getInstance()->updateSession(nSessionId, nNow);
                                     SessionModel::getInstance()->updateSession(nPeerSessionId, nNow);
                                 }
-                                else {
+                                else
+                                {
                                     LOGE("msgId is invalid. fromId=%u, toId=%u, nRelateId=%u, nSessionId=%u, nMsgType=%u", nFromId, nToId, nRelateId, nSessionId, nMsgType);
                                 }
                             }
-                            else {
+                            else
+                            {
                                 LOGE("sessionId or relateId is invalid. fromId=%u, toId=%u, nRelateId=%u, nSessionId=%u, nMsgType=%u", nFromId, nToId, nRelateId, nSessionId, nMsgType);
                             }
                         }

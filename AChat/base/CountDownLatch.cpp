@@ -1,9 +1,3 @@
-/*
- * CountDownLatch.cpp
- *
- *  Created on: 2021年2月3日
- *      Author: cfs
- */
 #include "CountDownLatch.h"
 
 CountDownLatch::CountDownLatch(int count_):mutex(),condition(mutex),count(count_){}

@@ -21,19 +21,19 @@ static uint32_t g_max_conn_cnt;
 void login_server_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
 	connMap::iterator it_old;
-	CLoginServConn* pConn = NULL;
+	LoginServConn* pConn = NULL;
 	uint64_t cur_time = get_tick_count();
 
 	for (connMap::iterator it = g_login_server_conn_map.begin(); it != g_login_server_conn_map.end(); ) {
 		it_old = it;
 		it++;
 
-		pConn = (CLoginServConn*)it_old->second;
+		pConn = (LoginServConn*)it_old->second;
 		pConn->OnTimer(cur_time);
 	}
 
 	// reconnect LoginServer
-	serv_check_reconnect<CLoginServConn>(g_login_server_list, g_login_server_count);
+	serv_check_reconnect<LoginServConn>(g_login_server_list, g_login_server_count);
 }
 
 void init_login_serv_conn(serv_info_t* server_list, uint32_t server_count, const char* msg_server_ip_addr1,
@@ -42,7 +42,7 @@ void init_login_serv_conn(serv_info_t* server_list, uint32_t server_count, const
 	g_login_server_list = server_list;
 	g_login_server_count = server_count;
 
-	serv_init<CLoginServConn>(g_login_server_list, g_login_server_count);
+	serv_init<LoginServConn>(g_login_server_list, g_login_server_count);
 
 	g_msg_server_ip_addr1 = msg_server_ip_addr1;
 	g_msg_server_ip_addr2 = msg_server_ip_addr2;
@@ -55,10 +55,10 @@ void init_login_serv_conn(serv_info_t* server_list, uint32_t server_count, const
 // if there is one LoginServer available, return true
 bool is_login_server_available()
 {
-	CLoginServConn* pConn = NULL;
+	LoginServConn* pConn = NULL;
 
 	for (uint32_t i = 0; i < g_login_server_count; i++) {
-		pConn = (CLoginServConn*)g_login_server_list[i].serv_conn;
+		pConn = (LoginServConn*)g_login_server_list[i].serv_conn;
 		if (pConn && pConn->IsOpen()) {
 			return true;
 		}
@@ -69,10 +69,10 @@ bool is_login_server_available()
 
 void send_to_all_login_server(ImPdu* pPdu)
 {
-	CLoginServConn* pConn = NULL;
+	LoginServConn* pConn = NULL;
 
 	for (uint32_t i = 0; i < g_login_server_count; i++) {
-		pConn = (CLoginServConn*)g_login_server_list[i].serv_conn;
+		pConn = (LoginServConn*)g_login_server_list[i].serv_conn;
 		if (pConn && pConn->IsOpen()) {
 			pConn->sendPdu(pPdu);
 		}
@@ -80,17 +80,17 @@ void send_to_all_login_server(ImPdu* pPdu)
 }
 
 
-CLoginServConn::CLoginServConn()
+LoginServConn::LoginServConn()
 {
 	m_bOpen = false;
 }
 
-CLoginServConn::~CLoginServConn()
+LoginServConn::~LoginServConn()
 {
 
 }
 
-void CLoginServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
+void LoginServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
 	LOGE("Connecting to LoginServer %s:%d ", server_ip, server_port);
 	m_serv_idx = serv_idx;
@@ -101,9 +101,9 @@ void CLoginServConn::Connect(const char* server_ip, uint16_t server_port, uint32
 	}
 }
 
-void CLoginServConn::Close()
+void LoginServConn::Close()
 {
-	serv_reset<CLoginServConn>(g_login_server_list, g_login_server_count, m_serv_idx);
+	serv_reset<LoginServConn>(g_login_server_list, g_login_server_count, m_serv_idx);
 
 	if (sockfd != NETLIB_INVALID_HANDLE) {
 		netlib_close(sockfd);
@@ -112,7 +112,7 @@ void CLoginServConn::Close()
 
 }
 
-void CLoginServConn::OnConfirm()
+void LoginServConn::OnConfirm()
 {
 	LOGE("connect to login server success ");
 	m_bOpen = true;
@@ -139,13 +139,13 @@ void CLoginServConn::OnConfirm()
 	sendPdu(&pdu);
 }
 
-void CLoginServConn::OnClose()
+void LoginServConn::OnClose()
 {
 	LOGE("login server conn onclose, from handle=%d ", sockfd);
 	Close();
 }
 
-void CLoginServConn::OnTimer(uint64_t curr_tick)
+void LoginServConn::OnTimer(uint64_t curr_tick)
 {
 	if (curr_tick > lastSendTick + SERVER_HEARTBEAT_INTERVAL) {
         IM::Other::IMHeartBeat msg;
@@ -162,6 +162,6 @@ void CLoginServConn::OnTimer(uint64_t curr_tick)
 	}
 }
 
-void CLoginServConn::HandlePdu(ImPdu* pPdu)
+void LoginServConn::HandlePdu(ImPdu* pPdu)
 {
 }

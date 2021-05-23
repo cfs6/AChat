@@ -94,7 +94,7 @@ private:
     list<msg_ack_t>	m_send_msg_list;
     uint32_t		m_msg_cnt_per_sec;
     uint32_t        m_client_type;        //客户端登录方式
-    uint32_t        m_online_status;      //在线状态 1-online, 2-off-line, 3-leave
+    uint32_t        m_online_status;
     TimerId    	    m_checkOnlineTimerId;
 };
 
